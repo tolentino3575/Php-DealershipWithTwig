@@ -1,20 +1,22 @@
 <?php
   class Car
   {
-      public $make_model;
-      public $price;
-      public $miles;
+      private $make_model;
+      private $price;
+      private $miles;
+      private $image;
 
       function worthBuying($max_price)
       {
           return $this->price < ($max_price + 100);
       }
 
-      function __construct($make_model, $price, $miles)
+      function __construct($make_model, $price, $miles, $image)
       {
           $this->make_model = $make_model;
           $this->price = $price;
           $this->mileage = $miles;
+          $this->image = $image;
       }
 
       function setMakeModel($new_make)
@@ -34,7 +36,6 @@
               $this->price = $formatted_price;
           }
       }
-
       function getPrice()
       {
           return $this->price;
@@ -48,17 +49,25 @@
               $this->mileage = $formatted_mileage;
           }
       }
-
       function getMileage()
       {
           return $this->mileage;
       }
+
+      function setImage()
+      {
+          $this->image = $new_image;
+      }
+      function getImage()
+      {
+          return $this->image;
+      }
   }
 
-  $porsche = new Car("2014 Porsche 911", 114991, 7864);
-  $ford = new Car("2011 Ford F450", 55995, 14241);
-  $lexus = new Car("2013 Lexus RX 350", 44700, 20000);
-  $mercedes = new Car("Mercedes Benz CLS550", 39900, 37979);
+  $porsche = new Car("2014 Porsche 911", 114991, 7864, "img/911.jpg");
+  $ford = new Car("2011 Ford F450", 55995, 14241, "img/f450.jpeg");
+  $lexus = new Car("2013 Lexus RX 350", 44700, 20000, "img/rx350.jpg");
+  $mercedes = new Car("Mercedes Benz CLS550", 39900, 37979, "img/cls550.jpeg");
 
   $cars = array($porsche, $ford, $lexus, $mercedes);
 
@@ -80,10 +89,15 @@
     <ul>
         <?php
             foreach ($cars_matching_search as $car) {
-                echo "<li> $car->make_model </li>";
+                $newMake = $car->getMakeModel();
+                $newPrice = $car->getPrice();
+                $newMileage = $car->getMileage();
+                $newImage = $car->getImage();
+                echo "<img src='$newImage'>";
+                echo "<li>$newMake</li>";
                 echo "<ul>";
-                    echo "<li> $$car->price </li>";
-                    echo "<li> $car->mileage </li>";
+                    echo "<li> $$newPrice</li>";
+                    echo "<li> $newMileage</li>";
                 echo "</ul>";
             }
         ?>
