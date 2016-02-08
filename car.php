@@ -16,6 +16,43 @@
           $this->price = $price;
           $this->mileage = $miles;
       }
+
+      function setMakeModel($new_make)
+      {
+          $this->make_model = $new_make;
+      }
+      function getMakeModel()
+      {
+          return $this->make_model;
+      }
+
+      function setPrice($new_price)
+      {
+          $float_price = (float) $new_price;
+          if ($float_price != 0) {
+              $formatted_price = number_format($float_price, 2);
+              $this->price = $formatted_price;
+          }
+      }
+
+      function getPrice()
+      {
+          return $this->price;
+      }
+
+      function setMileage($new_mileage)
+      {
+          $float_mileage = (float) $new_mileage;
+          if ($float_mileage != 0) {
+              $formatted_mileage = number_format($float_mileage, 2);
+              $this->mileage = $formatted_mileage;
+          }
+      }
+
+      function getMileage()
+      {
+          return $this->mileage;
+      }
   }
 
   $porsche = new Car("2014 Porsche 911", 114991, 7864);
@@ -27,7 +64,7 @@
 
   $cars_matching_search = array();
   foreach ($cars as $car) {
-    if ($car->worthBuying($_GET["price"]) {
+    if ($car->worthBuying($_GET["price"])) {
       array_push($cars_matching_search, $car);
     }
   }
@@ -46,7 +83,7 @@
                 echo "<li> $car->make_model </li>";
                 echo "<ul>";
                     echo "<li> $$car->price </li>";
-                    echo "<li> $car->miles </li>";
+                    echo "<li> $car->mileage </li>";
                 echo "</ul>";
             }
         ?>
