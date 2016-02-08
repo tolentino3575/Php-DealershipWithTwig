@@ -46,11 +46,7 @@
 
       function setMileage($new_mileage)
       {
-          // $float_mileage = (float) $new_mileage;
-          // if ($float_mileage != 0) {
-          //     $formatted_mileage = number_format($float_mileage, 2);
-              $this->miles = $new_mileage;
-          // }
+          $this->miles = $new_mileage;
       }
       function getMileage()
       {
@@ -74,7 +70,6 @@
 
   $cars = array($porsche, $ford, $lexus, $mercedes);
   $cars_matching_search = array();
-  var_dump($cars_matching_search);
   foreach ($cars as $car) {
     if ($car->worthBuying($_GET["price"], $_GET["mileage"])) {
       array_push($cars_matching_search, $car);
@@ -91,6 +86,7 @@
     <h1>Your Car Dealership</h1>
     <ul>
         <?php
+          if (!empty($cars_matching_search)) {
             foreach ($cars_matching_search as $car) {
                 $newMake = $car->getMakeModel();
                 $newPrice = $car->getPrice();
@@ -103,6 +99,10 @@
                     echo "<li> $newMileage</li>";
                 echo "</ul>";
             }
+          }
+          else {
+            echo "There are no cars to show";
+          }
         ?>
     </ul>
 </body>
