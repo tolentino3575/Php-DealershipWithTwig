@@ -6,16 +6,19 @@
       private $miles;
       private $image;
 
-      function worthBuying($max_price)
+      function worthBuying($max_price, $max_mileage)
       {
-          return $this->price < ($max_price + 100);
+          if (($this->price < ($max_price + 100)) &&
+              ($this->miles < $max_mileage)) {
+              return $this;
+          }
       }
 
       function __construct($make_model, $price, $miles, $image)
       {
           $this->make_model = $make_model;
           $this->price = $price;
-          $this->mileage = $miles;
+          $this->miles = $miles;
           $this->image = $image;
       }
 
@@ -43,15 +46,15 @@
 
       function setMileage($new_mileage)
       {
-          $float_mileage = (float) $new_mileage;
-          if ($float_mileage != 0) {
-              $formatted_mileage = number_format($float_mileage, 2);
-              $this->mileage = $formatted_mileage;
-          }
+          // $float_mileage = (float) $new_mileage;
+          // if ($float_mileage != 0) {
+          //     $formatted_mileage = number_format($float_mileage, 2);
+              $this->miles = $new_mileage;
+          // }
       }
       function getMileage()
       {
-          return $this->mileage;
+          return $this->miles;
       }
 
       function setImage()
@@ -70,10 +73,10 @@
   $mercedes = new Car("Mercedes Benz CLS550", 39900, 37979, "img/cls550.jpeg");
 
   $cars = array($porsche, $ford, $lexus, $mercedes);
-
   $cars_matching_search = array();
+  var_dump($cars_matching_search);
   foreach ($cars as $car) {
-    if ($car->worthBuying($_GET["price"])) {
+    if ($car->worthBuying($_GET["price"], $_GET["mileage"])) {
       array_push($cars_matching_search, $car);
     }
   }
