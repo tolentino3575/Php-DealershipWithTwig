@@ -2,36 +2,27 @@
     require_once __DIR__."/../vendor/autoload.php";
     require_once __DIR__."/../src/car.php";
 
+    session_start();
+    if (empty($_SESSION['list_of_cars'])) {
+        $_SESSION['list_of_cars'] = array();
+    }
+
     $app = new Silex\Application();
+
+    $app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../views'
+    ));
 
     $app['debug']=true;
 
-    $app->get("/", function() {
-        return "<!DOCTYPE html>
-        <html>
-        <head>
-            <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>
-            <title>Find A Car</title>
-        </head>
-        <body>
-            <div class='container'>
-                <h1>Find a Car!</h1>
-                <form action='/car_output'>
-                    <div class='form-group'>
-                        <label for='price'>Enter Maximum Price:</label>
-                        <input id='price' name='price' class='form-control' type='number'>
-                        <label for='mileage'>Enter Maximum Mileage:</label>
-                        <input id='mileage' name='mileage' class='form-control' type='number'>
-                    </div>
-                    <button type='submit' class='btn-success'>Submit</button>
-                </form>
-            </div>
-        </body>
-        </html>
-        ";
+    $app->get("/", function() use ($app) {
+
+      return $app['twig']->render('home.html.twig', array('cars' => Car::getAll()));
+
+
     });
 
-    $app->get("/car_output", function(){
+    $app->get("/car_output", function() use ($app) {
 
     $porsche = new Car("2014 Porsche 911", 114991, 7864, "img/911.jpg");
     $ford = new Car("2011 Ford F450", 55995, 14241, "img/f450.jpeg");
@@ -43,36 +34,20 @@
     foreach ($cars as $car) {
       if ($car->worthBuying($_GET["price"], $_GET["mileage"])) {
         array_push($cars_matching_search, $car);
-
       }
-
     }
+      return $app['twig']->render('caroutput.html.twig', array('cars' => $cars_matching_search));
 
+    });
 
-    if (!empty($cars_matching_search)) {
-     $output = "";
-      foreach ($cars_matching_search as $car) {
+    $app->get("/newlisting", function() use ($app) {
+      return $app['twig']->render('newlisting.html.twig');
+    });
 
-          $newMake = $car->getMakeModel();
-          $newPrice = $car->getPrice();
-          $newMileage = $car->getMileage();
-          $newImage = $car->getImage();
-
-          $output = $output . "
-          <img src='$newImage'>
-          <li>$newMake</li>
-          <ul>
-          <li>$$newPrice</li>
-          <li> $newMileage</li>
-          </ul>
-          ";
-      }
-      return $output;
-    }
-    else {
-      return "There are no cars to show";
-    }
-
+    $app->post("/newlisting", function() use ($app) {
+      $car = new Car($_POST['make_model'], $_POST['price'], $_POST['mileage']);
+      $car->save();
+      return $app['twig']->render('listingresult.html.twig', array('newcars' => $car));
     });
 
     return $app;

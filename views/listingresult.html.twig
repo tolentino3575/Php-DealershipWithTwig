@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>
+        <title>Here are your listings</title>
+    </head>
+    <body>
+
+        <div class="container">
+           {% if newcars is not empty %}
+        	   <h1>Your options:</h1>
+           <ul>
+        	   {% for newcar in newcars %}
+        		   <li><h4>Model:</h4>{{ newcar.getMakeModel }}</li>
+        		   <li><h4>Price:</h4>{{ newcar.getPrice }}</li>
+        		   <li><h4>Mileage:</h4>{{ newcar.getMileage }}</li>
+        	   {% endfor %}
+           </ul>
+           {% endif %}
+           {% if newcars is empty%}
+        	   <p>Please input some information about the car you want to sell.</p>
+           {% endif %}
+        </div>
+    </body>
+</html>

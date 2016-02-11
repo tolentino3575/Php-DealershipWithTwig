@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>
+    <title>Your Options</title>
+  </head>
+  <body>
+     <div class="container">
+        {% if cars is not empty %}
+            <h1>Your options:</h1>
+        <ul>
+            {% for car in cars %}
+                <li><h4>Model:</h4>{{ car.getMakeModel }}</li>
+                <li><h4>Price:</h4>{{ car.getPrice }}</li>
+                <li><h4>Mileage:</h4>{{ car.getMileage }}</li>
+                <li><img src="{{ car.getImage }}"></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if cars is empty%}
+            <p>NO CARS FOR YOU!</p>
+        {% endif %}
+    </div>
+  </body>
+</html>
