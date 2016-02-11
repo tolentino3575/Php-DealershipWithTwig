@@ -24,14 +24,9 @@
 
     $app->get("/car_output", function() use ($app) {
 
-    $porsche = new Car("2014 Porsche 911", 114991, 7864, "img/911.jpg");
-    $ford = new Car("2011 Ford F450", 55995, 14241, "img/f450.jpeg");
-    $lexus = new Car("2013 Lexus RX 350", 44700, 20000, "img/rx350.jpg");
-    $mercedes = new Car("Mercedes Benz CLS550", 39900, 37979, "img/cls550.jpeg");
 
-    $cars = array($porsche, $ford, $lexus, $mercedes);
     $cars_matching_search = array();
-    foreach ($cars as $car) {
+    foreach (Car::getAll() as $car) {
       if ($car->worthBuying($_GET["price"], $_GET["mileage"])) {
         array_push($cars_matching_search, $car);
       }
