@@ -44,10 +44,11 @@
       return $app['twig']->render('newlisting.html.twig');
     });
 
-    $app->post("/newlisting", function() use ($app) {
+    $app->post("/listingresult", function() use ($app) {
       $car = new Car($_POST['make_model'], $_POST['price'], $_POST['mileage']);
+      $cars_listed = array($car);
       $car->save();
-      return $app['twig']->render('listingresult.html.twig', array('newcars' => $car));
+      return $app['twig']->render('listingresult.html.twig', array('newcars' => $cars_listed));
     });
 
     return $app;

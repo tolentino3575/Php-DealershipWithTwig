@@ -14,7 +14,7 @@
           }
       }
 
-      function __construct($make_model, $price, $miles, $image)
+      function __construct($make_model, $price, $miles, $image=null)
       {
           $this->make_model = $make_model;
           $this->price = $price;
